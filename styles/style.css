@@ -1,0 +1,93 @@
+.clearfix {
+  zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+
+body {
+	font-size: 16px;
+	color: #333;
+	background-color: lightgrey;
+}
+
+.wrap {
+	width: 1024px;
+	margin: 30px auto;
+}
+
+header {
+	// display: inline-block;
+}
+
+.logo {
+	font-size: 28px;
+	color: darkgreen;
+	margin-left: 20px;
+}
+
+.descr {
+	float: right;
+	font-style: italic;
+	letter-spacing: 2px;
+	margin-right: 20px;
+}
+
+aside {
+	float: left;
+	margin-right: 50px;
+}
+
+.menu {
+	list-style: none;
+	padding-left: 0;
+}
+
+.menu li {
+	//
+}
+
+.menu a {
+	display: inline-block;
+	font-size: 20px;
+	color: red;
+	padding: 10px 40px;
+	margin-bottom: 10px;
+	background-color: #aaa;
+	text-decoration: none;
+}
+
+.menu a:hover {
+	color: #bbb;
+	background-color: #777;
+}
+
+.content {
+	//
+}
+
+h2 {
+	font-size: 24px;
+	color: #666;
+}
+
+section {
+	margin: 30px;
+}
+
+.content p {
+	line-height: 1.6em;
+}
+
+footer {
+	border: 1px solid #555;
+}
+
+footer p {
+	font-weight: bold;
+}
