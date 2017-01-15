@@ -1,6 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 session_start();
 $msg = "";
 $login = "root";
@@ -11,7 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $p = $_POST["password"];
   if ($l==$login and $p==$pass) {
     $_SESSION["admin"] = true;
-    header("Location: ".dirname($_SERVER["PHP_SELF"], 2));
+    //header("Location: ".dirname($_SERVER["PHP_SELF"], 2));//php7
+    header("Location: ".dirname(dirname($_SERVER["PHP_SELF"])));//php5
     exit;
   } else {
     $msg = "Неправильный логин или пароль";
@@ -25,12 +24,12 @@ $extra = 'index.php';
 header("Location: http://$host$uri/$extra");
 exit;*/
 
-echo "REQUEST_URI ".$_SERVER["REQUEST_URI"]."<br>";
+/*echo "REQUEST_URI ".$_SERVER["REQUEST_URI"]."<br>";
 echo "DOCUMENT_ROOT ".$_SERVER["DOCUMENT_ROOT"]."<br>";
 echo "PATH_INFO ".$_SERVER["PATH_INFO"]."<br>";
 echo "php_self ".$_SERVER["PHP_SELF"]."<br>";
 echo "script_name ".$_SERVER["SCRIPT_NAME"]."<br>";
-echo "http_referer ".$_SERVER["HTTP_REFERER"]."<br>";
+echo "http_referer ".$_SERVER["HTTP_REFERER"]."<br>";*/
 ?>
 
 <p><?=$msg?></p>

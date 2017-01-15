@@ -14,4 +14,6 @@ if (isset($_GET["del"])) {
   $arr = get(FILE_DB);//
   $arr = del($arr, $_GET["del"]);
   save(FILE_DB, $arr, NULL);
+  header("Location: index.php?adm=3");//убрать del=id
+  exit;
 }

@@ -1,28 +1,9 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 require_once 'secure/sess.inc.php';
 require_once 'secure/lib.inc.php';
-$include = "";
-$title = "Админка";
-$header = "Доступные действия";
-switch ($_GET["adm"]) {
-  case "1" :
-    $include = "inc/save.inc.php";
-    $title .= " | Создание статей";
-    $header = "Создать статью";
-    break;
-  case "2" :
-    $include = "inc/upd.inc.php";
-    $title .= " | Редактирование статей";
-    $header = "Редактировать статью";
-    break;
-  case "3" :
-    $include = "inc/del.inc.php";
-    $title .= " | Удаление статей";
-    $header = "Удалить статью";
-    break;
-}
+require_once 'secure/data.inc.php';
+// ob_start();
+
 $msg = "";
 ?>
 <!DOCTYPE html>
@@ -33,13 +14,13 @@ $msg = "";
 	<title><?=$title?></title>
 </head>
 <body>
-	<ul>
-		<li><a href="index.php?adm=1">Save</a></li>
-		<li><a href="index.php?adm=2">Edit</a></li>
-		<li><a href="index.php?adm=3">Delete</a></li>
-		<li><a href="index.php?logout">Logout</a></li>
-	</ul>
 	<h4><?=$header?></h4>
+	<ul>
+		<li><a href="<?=$_SERVER['PHP_SELF']?>?adm=1">Save</a></li>
+		<li><a href="<?=$_SERVER['PHP_SELF']?>?adm=2">Edit</a></li>
+		<li><a href="<?=$_SERVER['PHP_SELF']?>?adm=3">Delete</a></li>
+		<li><a href="<?=$_SERVER['PHP_SELF']?>?logout">Logout</a></li>
+	</ul>
 	<ul class="arts">
 		<?php
 			if (isset($_GET["adm"])) {
@@ -48,6 +29,7 @@ $msg = "";
 			if (isset($_GET["logout"])) {
 				logout();
 			}
+   // ob_flush();
 		?>
 	</ul>
 </body>

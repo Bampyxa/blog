@@ -3,9 +3,10 @@ $title = "";
 $article = "";
 //Редактируем полученную статью
 if (isset($_GET["upd"])) {
+  $id = $_GET["upd"];
   $arr = get(FILE_DB);
-	$arr = upd($arr, $_GET["upd"]);
-	list($title, $_, $article) = explode("|", $arr);
+	$row = get_item_for_upd($arr, $id);
+	list($title, $_, $article) = explode("|", $row);
 	$article = base64_decode($article);
 }
 ?>
@@ -23,7 +24,8 @@ if (isset($_GET["upd"])) {
 //Пересохранение статьи
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $t = $_POST["title"];
-  $a = $_POST["article"];
+  $a = base64_encode($_POST["article"]);
+  $id = $_GET["upd"];
   if (!$t and !$a) {//проверка на пуст. поля
     $msg = "Заполните поля";
   } else {
@@ -32,7 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $arr = get(FILE_DB);
     // for ($i=0, $cnt=count($arr); $i<$cnt; $i++) {//!!!
     	//
-	    save(FILE_DB, $str);
+     $arr = upd($arr, $id, $str);
+	    save(FILE_DB, $arr, NULL);
+     //header("Location: ".$_SERVER['REQUEST_URI']."/index.php");
+     header("Location: index.php?adm=2");
+     exit;
 	  // }
   }
 }

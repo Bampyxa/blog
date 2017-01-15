@@ -13,6 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $str = "$t|$dt|$a\n";
     if (!save(FILE_DB, $str))
     	$msg = "Данные не записались";
+    header("Location: ".$_SERVER["REQUEST_URI"]);//кроме adm пер-х GET нету
+  exit;
   }
 }
 ?>
