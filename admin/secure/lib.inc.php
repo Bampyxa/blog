@@ -1,22 +1,17 @@
 <?php
-const FILE_DB = "../files/arts.txt";
 
 function get($file) {
   $arr = file($file);
   return $arr;
 }
-function save($file, $data, $end_file=FILE_APPEND) {
+
+function save($file, $xml, $data, $end_file=FILE_APPEND) {
   file_put_contents($file, $data, $end_file);
-  /*header("Location: ".$_SERVER["REQUEST_URI"]);//убрать del=id
-  exit;*/
+  create_xml($file, $xml);
 }
-/*function del($file, $arr, $id) {
-  unset($arr[$id]);
-  save_rows($file, $arr, NULL);
-}*/
+
 function del($arr, $id) {
   unset($arr[$id]);
-  // save_rows($file, $arr, NULL);
   return $arr;
 }
 function get_item_for_upd($arr, $id) {
@@ -34,24 +29,12 @@ function upd($arr, $id, $value) {
     }
   }
 }
-/*function show($file, $action, $act_name) {
-  $arr = get_rows($file);
-  echo "<article>";
-  for ($i=0, $cnt=count($arr); $i<$cnt; $i++) {
-    list($title, $_, $_) = explode("|", $arr[$i]);
-    echo <<<HEREDOC
-    <p>$arr[$title] <a href='test1.php?{$action}={$i}'>{$act_name}</a></p>
-HEREDOC;
-  }
-  echo "</article>";
-}*/
 
-function show($arr, $action, $act_name) {
-  // $arr = get_rows($arr);
+function show($arr, $page, $action, $act_name) {
   for ($i=0, $cnt=count($arr); $i<$cnt; $i++) {
     list($title, $_, $_) = explode("|", $arr[$i]);
     echo <<<HEREDOC
-    <li>{$title} <a href='{$_SERVER['PHP_SELF']}?adm=2&{$action}={$i}'>{$act_name}</a></li>
+    <li>{$title} <a href='{$_SERVER['PHP_SELF']}?adm={$page}&{$action}={$i}'>{$act_name}</a></li>
 HEREDOC;
   }
 }
@@ -64,23 +47,31 @@ function logout() {
   exit;
 }
 
-/*$include = "";
-$title = "Админка";
-$header = "Доступные действия";
-switch ($_GET["adm"]) {
-  case "1" :
-    $include = "save.inc.php";
-    $title .= " | Создание статей";
-    $header = "Создать статью";
-    break;
-  case "2" :
-    $include = "edit.inc.php";
-    $title .= " | Редактирование статей";
-    $header = "Редактировать статью";
-    break;
-  case "3" :
-    $include = "del.inc.php";
-    $title .= " | Удаление статей";
-    $header = "Удалить статью";
-    break;
-}*/
+function create_xml($file, $xml) {
+  $dom = new DomDocument("1.0", "utf-8");
+  $dom->formatOutput = true;
+  $dom->preserveWhiteSpace = false;
+  //
+  $root = $dom->createElement("articles");
+  $dom->appendChild($root);
+  //
+  $arr = get($file);
+  if (!$arr) return false;
+  foreach ($arr as $item) {
+    list($title, $date, $art) = explode("|", $item);
+    $item = $dom->createElement("article");
+    //
+    $_title = $dom->createElement("title", $title);
+    $_date = $dom->createElement("date", date("r", $date));
+    $_art = $dom->createElement("art");
+    $cdata = $dom->createCDATASection(base64_decode($art));
+    $_art->appendChild($cdata);
+    //
+    $item->appendChild($_title);
+    $item->appendChild($_date);
+    $item->appendChild($_art);
+    //
+    $root->appendChild($item);
+  }
+  $dom->save($xml);
+}

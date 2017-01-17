@@ -1,7 +1,9 @@
 <?php
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 1);
 require_once 'secure/sess.inc.php';
-require_once 'secure/lib.inc.php';
 require_once 'secure/data.inc.php';
+require_once 'secure/lib.inc.php';
 // ob_start();
 
 $msg = "";

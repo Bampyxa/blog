@@ -1,4 +1,7 @@
 <?php
+const FILE_DB = "../files/arts.txt";
+const XML_FILE = "/files/arts.xml";
+
 $include = "";
 $title = "Админка";
 $header = "Доступные действия";

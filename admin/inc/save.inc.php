@@ -11,10 +11,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $dt = time();
     $a = base64_encode($a);
     $str = "$t|$dt|$a\n";
-    if (!save(FILE_DB, $str))
+    if (!save(FILE_DB, XML_FILE, $str)) {
     	$msg = "Данные не записались";
-    header("Location: ".$_SERVER["REQUEST_URI"]);//кроме adm пер-х GET нету
-  exit;
+    } else {
+      header("Location: ".$_SERVER["REQUEST_URI"]);//кроме adm пер-х GET нету
+      exit;
+    }
   }
 }
 ?>
@@ -34,5 +36,5 @@ if (!file_exists(FILE_DB)) {
   $msg = "Такого файла нет";
 } else {
   $arr = get(FILE_DB);
-	show($arr, $action="", $act_name="");//???добав-ся ненуж. ссылка
+	show($arr, $page="", $action="", $act_name="");//???добав-ся ненуж. ссылка
 }

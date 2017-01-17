@@ -32,23 +32,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $dt = time();
     $str = "$t|$dt|$a\n";
     $arr = get(FILE_DB);
-    // for ($i=0, $cnt=count($arr); $i<$cnt; $i++) {//!!!
-    	//
-     $arr = upd($arr, $id, $str);
-	    save(FILE_DB, $arr, NULL);
-     //header("Location: ".$_SERVER['REQUEST_URI']."/index.php");
-     header("Location: index.php?adm=2");
-     exit;
-	  // }
+    $new_arr = upd($arr, $id, $str);
+	  save(FILE_DB, XML_FILE, $new_arr, NULL);
+    header("Location: index.php?adm=2");
+    exit;
   }
 }
 
 //Вывод всех статей со ссылкой редактирования
+$page = 2;
 $action = "upd";
 $act_name = "Редактировать";
 if (!file_exists(FILE_DB)) {
   $msg = "Такого файла нет";
 } else {
   $arr = get(FILE_DB);
-	show($arr, $action, $act_name);
+	show($arr, $page, $action, $act_name);
 }
