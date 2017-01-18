@@ -82,7 +82,8 @@ aside {
 
 
 .content {
-	//
+	float: right;
+	width: 500px;
 }
 
 h2 {
@@ -109,4 +110,5 @@ footer {
 
 footer p {
 	font-weight: bold;
+	margin-left: 20px;
 }
