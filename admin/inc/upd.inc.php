@@ -1,51 +1,69 @@
 <?php
+
+$categ = "";
+$author = "";
 $title = "";
-$article = "";
+$text = "";
+
 //Редактируем полученную статью
 if (isset($_GET["upd"])) {
-  $id = $_GET["upd"];
-  $arr = get(FILE_DB);
-	$row = get_item_for_upd($arr, $id);
-	list($title, $_, $article) = explode("|", $row);
-	$article = base64_decode($article);
+  $id = clear_int($_GET["upd"]);
+  $arr = get_art($id);
+  $categ = $arr['category'];
+  $author = $arr['author'];
+  $title = $arr['title'];
+	$text = $arr['text_art'];
 }
 ?>
 
 <fieldset>
 <legend>Редактировать статью</legend>
   <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
-    <input type="text" name="title" value="<?=$title?>"><br>
-    <textarea name="article"><?=$article?></textarea><br>
-    <input type="submit">
+    <select name="category">
+    <?php
+      $arr = get_categories();
+      foreach ($arr as $item) {
+        if ($categ == $item["category"]) {
+          echo "<option value=\"{$item['id']}\" selected>{$item['category']}</option>";
+        } else {
+          echo "<option value=\"{$item['id']}\">{$item['category']}</option>";
+        }
+      }
+    ?>
+    </select><br>
+      <input type="text" name="author" value="<?=$author?>"><br>
+      <input type="text" name="title" value="<?=$title?>"><br>
+      <textarea name="text_art"><?=$text?></textarea><br>
+    <input type="submit" value="Редактировать">
   </form>
 </fieldset>
 
 <?php
 //Пересохранение статьи
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $t = $_POST["title"];
-  $a = base64_encode($_POST["article"]);
-  $id = $_GET["upd"];
-  if (!$t and !$a) {//проверка на пуст. поля
+  $title = clear_str($_POST["title"]);
+  $author = clear_str($_POST["author"]);
+  $categ = clear_str($_POST["category"]);
+  $text = clear_str($_POST["text_art"]);
+  // $id = $_GET["upd"];// уже известно
+  if (empty($title) and empty($author) and empty($text)) {//проверка на пуст. поля
     $msg = "Заполните поля";
   } else {
-    $dt = time();
-    $str = "$t|$dt|$a\n";
-    $arr = get(FILE_DB);
-    $new_arr = upd($arr, $id, $str);
-	  save(FILE_DB, XML_FILE, $new_arr, NULL);
-    header("Location: index.php?adm=2");
+	  update_art($id, $title, $author, $categ, $text);
+    header("Location: ".$_SERVER['PHP_SELF']."?adm=2");
     exit;
   }
 }
 
 //Вывод всех статей со ссылкой редактирования
-$page = 2;
-$action = "upd";
-$act_name = "Редактировать";
-if (!file_exists(FILE_DB)) {
-  $msg = "Такого файла нет";
+$arr = get_arts();
+if (!$arr) {
+  $msg = "Ошибка получения из бд";
 } else {
-  $arr = get(FILE_DB);
-	show($arr, $page, $action, $act_name);
+  echo "<ul class='arts'>";
+  foreach ($arr as $item) {
+    echo "<li>{$item['title']} <a href=\"{$_SERVER['PHP_SELF']}?adm=2&upd={$item['id']}\">Редактировать</a></li>";
+  }
+  echo "</ul>";
+	// show_arts_admin($arr, "<a href=\"{$_SERVER['REQUEST_URI']}&upd={$item['id']}\">Редактировать</a>");
 }

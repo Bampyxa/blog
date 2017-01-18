@@ -3,17 +3,16 @@ ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 1);
 require_once 'secure/sess.inc.php';
 require_once 'secure/data.inc.php';
-require_once 'secure/lib.inc.php';
+require_once '../libs/lib.inc.php';
 // ob_start();
-
 $msg = "";
 ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+	<title><?=$title_site?></title>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="style.css">
-	<title><?=$title?></title>
 </head>
 <body>
 	<h4><?=$header?></h4>
@@ -23,7 +22,6 @@ $msg = "";
 		<li><a href="<?=$_SERVER['PHP_SELF']?>?adm=3">Delete</a></li>
 		<li><a href="<?=$_SERVER['PHP_SELF']?>?logout">Logout</a></li>
 	</ul>
-	<ul class="arts">
 		<?php
 			if (isset($_GET["adm"])) {
 				require_once $include;
@@ -32,7 +30,7 @@ $msg = "";
 				logout();
 			}
    // ob_flush();
+			echo $msg;
 		?>
-	</ul>
 </body>
 </html>

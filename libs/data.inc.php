@@ -1,6 +1,4 @@
 <?php
-const FILE_DB = "files/arts.txt";
-const XML_FILE = "files/arts.xml";
 
 $links = [
 	["link"=>"index.php", "name"=>"Главная страница"],

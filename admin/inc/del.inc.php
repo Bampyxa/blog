@@ -1,20 +1,23 @@
 <?php
 //Вывести весь список статей со ссылкой удаления
-$page = 3;
-$action = "del";
-$act_name = "Удалить";
-if (!file_exists(FILE_DB)) {
-  $msg = "Такого файла нет";
+$arr = get_arts();
+if (!$arr) {
+  $msg = "Ошибка получения данных из бд";
 } else {
-  $arr = get(FILE_DB);
-	show($arr, $page, $action, $act_name);
+	echo "<ul class='arts'>";
+	foreach ($arr as $item) {
+		echo "<li>{$item['title']} <a href=\"{$_SERVER['PHP_SELF']}?adm=3&del={$item['id']}\">Удалить</a></li>";
+	}
+	echo "</ul>";
+	// show_arts_admin($arr, "<a href=\"{$_SERVER['REQUEST_URI']}&del={$item['id']}\">Удалить</a>");
 }
 
 //Удал-е статьи и пересохранение:
 if (isset($_GET["del"])) {
-  $arr = get(FILE_DB);//
-  $arr = del($arr, $_GET["del"]);
-  save(FILE_DB, XML_FILE, $arr, NULL);
-  header("Location: index.php?adm=3");//убрать del=id
-  exit;
+  if (!delete_art($_GET["del"])) {
+  	$msg= "Ошибка удаления из бд";
+  } else {
+	  header("Location: ".$_SERVER['PHP_SELF']."?adm=3");//убрать del=id
+	  exit;
+	}
 }

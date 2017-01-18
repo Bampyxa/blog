@@ -1,18 +1,16 @@
 <?php
-// require_once 'lib.inc.php';//???
 
 //Сохранение добавленной статьи
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $t = $_POST["title"];
-  $a = $_POST["article"];
-  if (!$t and !$a) {//проверка на пуст. поля
+  $categ = clear_str($_POST["category"]);
+  $author = clear_str($_POST["author"]);
+  $title = clear_str($_POST["title"]);
+  $text = clear_str($_POST["text_art"]);
+  if (empty($author) and empty($title) and empty($text)) {//проверка на пуст. поля
     $msg = "Заполните поля";
   } else {
-    $dt = time();
-    $a = base64_encode($a);
-    $str = "$t|$dt|$a\n";
-    if (!save(FILE_DB, XML_FILE, $str)) {
-    	$msg = "Данные не записались";
+    if (!save_art($title, $author, $categ, $text)) {
+    	$msg = "Данные не записались в бд";
     } else {
       header("Location: ".$_SERVER["REQUEST_URI"]);//кроме adm пер-х GET нету
       exit;
@@ -24,17 +22,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <fieldset>
 <legend>Добавить статью</legend>
   <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
+  <select name="category">
+    <?php
+      $arr = get_categories();
+      foreach ($arr as $item) {
+        if ($categ == $item["category"]) {
+          echo "<option value=\"{$item['id']}\" selected>{$item['category']}</option>";
+        } else {
+          echo "<option value=\"{$item['id']}\">{$item['category']}</option>";
+        }
+      }
+    ?>
+  </select><br>
+    <input type="text" name="author"><br>
     <input type="text" name="title"><br>
-    <textarea name="article"></textarea><br>
-    <input type="submit">
+    <textarea name="text_art"></textarea><br>
+    <input type="submit" value="Создать">
   </form>
 </fieldset>
 
 <?php
 //Вывод всех статей
-if (!file_exists(FILE_DB)) {
-  $msg = "Такого файла нет";
+$arr = get_arts();
+if (!$arr) {
+  $msg = "Ошибка получения данных из бд";
 } else {
-  $arr = get(FILE_DB);
-	show($arr, $page="", $action="", $act_name="");//???добав-ся ненуж. ссылка
+  echo "<ul class='arts'>";
+  foreach ($arr as $item) {
+    echo "<li>{$item['title']}</li>";
+  }
+  echo "</ul>";
+	// show_arts_admin($arr);
 }
