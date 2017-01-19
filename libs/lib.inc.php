@@ -1,22 +1,5 @@
 <?php
 
-const DB_HOST = "localhost";
-const DB_USER = "root";
-const DB_PASS = "12qw-=";
-const DB_NAME = "blog";
-const XML_FILE = "../files/arts.xml";
-$categs = ["HTML", "CSS", "JS", "PHP"];
-
-//init bd
-$link = mysqli_connect(DB_HOST, DB_USER, DB_PASS);
-if (!mysqli_select_db($link, DB_NAME)) {//если базы не сущест.
-  create_db(DB_NAME);
-  mysqli_select_db($link, DB_NAME);//выбираем ее для последующ. созд-я табл.
-  create_table_arts();
-  create_table_categ();
-  add_categories($categs);
-}
-
 function create_db($db_name) {
   global $link;
   $sql = "CREATE DATABASE IF NOT EXISTS ".$db_name;
@@ -25,7 +8,7 @@ function create_db($db_name) {
 
 function create_table_arts() {
   global $link;
-  $sql = "CREATE TABLE IF NOT EXISTS 'articles' (
+  $sql = "CREATE TABLE IF NOT EXISTS articles (
             id int NOT NULL AUTO_INCREMENT,
             title varchar(30) NOT NULL default '',
             author varchar(30) NOT NULL default '',
@@ -82,7 +65,19 @@ function res2arr($res) {
 function get_categories() {
   global $link;
   $sql = "SELECT id, category FROM categories";
-  return mysqli_query($link, $sql);
+  $res = mysqli_query($link, $sql);
+  if (!$res) return false;
+  $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
+  return $row;
+}
+
+function get_category($cat) {
+  global $link;
+  $sql = "SELECT category FROM categories WHERE id=$cat";
+  $res = mysqli_query($link, $sql);
+  if (!$res) return false;
+  $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
+  return $row;
 }
 
 function get_arts() {
@@ -90,6 +85,18 @@ function get_arts() {
   $sql = "SELECT a.id, title, author, c.category, text_art, datetime 
            FROM articles a 
            INNER JOIN categories c ON a.category = c.id 
+           ORDER BY id DESC";
+  $res = mysqli_query($link, $sql);
+  if (!$res) return false;
+  return res2arr($res);
+}
+
+function get_arts_cat($cat) {
+  global $link;
+  $sql = "SELECT a.id, title, author, c.category, text_art, datetime 
+           FROM articles a 
+           INNER JOIN categories c ON a.category = c.id 
+           WHERE a.category=$cat 
            ORDER BY id DESC";
   $res = mysqli_query($link, $sql);
   if (!$res) return false;
@@ -125,7 +132,7 @@ function create_xml($xml) {
     //
     $_author = $dom->createElement("author", "{$item['author']}");
     $_category = $dom->createElement("category", "{$item['category']}");
-    $_date = $dom->createElement("date", date("r", "{$item['datetime']}"));
+    $_date = $dom->createElement("date", "{$item['datetime']}");
     $_title = $dom->createElement("title", "{$item['title']}");
     $_text = $dom->createElement("text");
     $cdata = $dom->createCDATASection("{$item['text_art']}");
@@ -165,11 +172,10 @@ function update_art($id, $title, $author, $category, $text) {
 
 function show_all_arts($arr) {
   foreach ($arr as $item) {
-    $date = date("r", $item["datetime"]);
     echo <<<HEREDOC
     <article>
-    <p><span>{$item['author']}</span> <span>{$item['category']}</span><em>{$item['datetime']}</em></p>
-    <h4>{$item['title']}</h4>
+    <p><span>{$item['author']}</span> <b>{$item['category']}</b> <em>{$item['datetime']}</em></p>
+    <h4><a href="index.php?id={$item['id']}">{$item['title']}</a></h4>
     {$item['text_art']}
     </article>
 HEREDOC;
@@ -179,7 +185,7 @@ HEREDOC;
 function show_art($arr) {
   echo <<<HEREDOC
     <article>
-    <p><span>{$arr['author']}</span> <span>{$item['category']}</span><em>{$arr['datetime']}</em></p>
+    <p><span>{$arr['author']}</span> <b>{$arr['category']}</b> <em>{$arr['datetime']}</em></p>
     <h4>{$arr['title']}</h4>
     {$arr['text_art']}
     </article>
@@ -203,8 +209,8 @@ function read_xml($file) {
     echo <<<HEREDOC
     <li>{$item->category} <a href="index.php?id={$item['id']}">{$item->title}</a></li>
 HEREDOC;
-echo "</ul>";
   }
+  echo "</ul>";
 }
 
 function clear_str($data) {
@@ -220,7 +226,7 @@ function menu($arr, $direction="vert") {
   echo "<ul class='menu {$direction}'>";
   foreach ($arr as $item) {
   echo <<<HEREDOC
-    <li><a href="{$item['link']}">{$item['name']}</a></li>
+    <li><a href="{$item['link_page']}">{$item['name']}</a></li>
 HEREDOC;
   }
   echo "</ul>";

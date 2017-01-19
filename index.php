@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require_once "libs/data.inc.php";
 require_once "libs/lib.inc.php";
+require_once "libs/route_site.inc.php";
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -30,6 +31,7 @@ require_once "libs/lib.inc.php";
 					require_once $include;
 					?>
 				</section>
+				<p class="msg"><?=$msg?></p>
 			</div>
 		</main>
 		<footer>

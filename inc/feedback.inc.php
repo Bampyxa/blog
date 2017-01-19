@@ -1,3 +1,4 @@
+
 <form class="mail" action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
 	<input type="text" name="to" placeholder="Кому"><br>
 	<input type="text" name="subject" placeholder="Тема"><br>

@@ -26,11 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php
       $arr = get_categories();
       foreach ($arr as $item) {
-        if ($categ == $item["category"]) {
+        /*if ($categ == $item["category"]) {
           echo "<option value=\"{$item['id']}\" selected>{$item['category']}</option>";
-        } else {
+        } else {*/
           echo "<option value=\"{$item['id']}\">{$item['category']}</option>";
-        }
+        // }
       }
     ?>
   </select><br>

@@ -16,6 +16,7 @@ if (!mysqli_select_db($link, DB_NAME)) {//если базы не сущест.
 $include = "";
 $title_site = "Админка";
 $header = "Доступные действия";
+
 if (isset($_GET["adm"])) {
 	switch ($_GET["adm"]) {
 	  case "1" :
@@ -34,4 +35,8 @@ if (isset($_GET["adm"])) {
 	    $header = "Удалить статью";
 	    break;
 	}
+}
+
+if (isset($_GET["logout"])) {
+	logout();
 }

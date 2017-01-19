@@ -32,12 +32,21 @@ echo "script_name ".$_SERVER["SCRIPT_NAME"]."<br>";
 echo "http_referer ".$_SERVER["HTTP_REFERER"]."<br>";*/
 ?>
 
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Авторизация</title>
+</head>
+<body>
 <p><?=$msg?></p>
 <fieldset>
 <legend>Вход в админку</legend>
-  <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
+  <form action="<?=$_SERVER['PHP_SELF']?>" method="POST">
     <input type="text" name="login"><br>
     <input type="text" name="password"><br>
     <input type="submit">
   </form>
 </fieldset>
+</body>
+</html>
