@@ -1,2 +1,4 @@
 files/*
 .htaccess
+prepros-6.config
+test.php

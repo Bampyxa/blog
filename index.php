@@ -1,9 +1,9 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once "libs/data.inc.php";
-require_once "libs/lib.inc.php";
-require_once "libs/route_site.inc.php";
+require_once "libs/data.inc.php";//connect db
+require_once "libs/lib.inc.php";//function for work with db
+require_once "libs/route_site.inc.php";//work with db
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -18,6 +18,11 @@ require_once "libs/route_site.inc.php";
 			<div class="logo">MySite</div>
 			<div class="descr">This is my new site. I have did it. Come here everybody</div>
 		</header>
+		<menu>
+			<?php
+				menu($link_cats, "hor");
+				?>
+		</menu>
 		<main class="clearfix">
 			<aside>
 				<?php

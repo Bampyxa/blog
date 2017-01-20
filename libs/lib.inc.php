@@ -67,8 +67,7 @@ function get_categories() {
   $sql = "SELECT id, category FROM categories";
   $res = mysqli_query($link, $sql);
   if (!$res) return false;
-  $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
-  return $row;
+  return res2arr($res);
 }
 
 function get_category($cat) {
@@ -226,7 +225,7 @@ function menu($arr, $direction="vert") {
   echo "<ul class='menu {$direction}'>";
   foreach ($arr as $item) {
   echo <<<HEREDOC
-    <li><a href="{$item['link_page']}">{$item['name']}</a></li>
+    <li><a href="{$item['link']}">{$item['name']}</a></li>
 HEREDOC;
   }
   echo "</ul>";

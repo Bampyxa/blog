@@ -36,6 +36,7 @@ echo "http_referer ".$_SERVER["HTTP_REFERER"]."<br>";*/
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="../style.css">
   <title>Авторизация</title>
 </head>
 <body>

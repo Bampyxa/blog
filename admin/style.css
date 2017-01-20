@@ -1,8 +1,14 @@
 body {
-	background-color: #bbb;
+	background-color: #f95;
 }
 
-form input, form textarea{
+fieldset {
+	// text-align: center;
+	width: 155px;
+	margin: 0 auto;
+}
+
+form input, form textarea, form select{
 	width: 150px;
 	margin-top: 10px;
 }
@@ -19,4 +25,8 @@ li a {
 	display: inline-block;
 	font-size: 20px;
 	color: #444;
+}
+
+li a:hover {
+	text-decoration: none;
 }

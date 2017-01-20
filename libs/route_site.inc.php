@@ -1,4 +1,8 @@
 <?php
+//default:
+$include = "inc/arts.inc.php";
+$title = "MySite";
+$header = "Новое на сайте";
 
 if (isset($_GET["page"])) {
 	switch ($_GET["page"]) {
@@ -19,18 +23,13 @@ else if (isset($_GET["id"])) {
 	$art = get_art($_GET["id"]);
 	if (!$art) $msg = "Не получены данные из бд";
 	$include = "inc/art.inc.php";
-	$title = $art["category"]." | ".$art["title"];
+	$title = "{$art['category']} | {$art['title']}";
 	$header = $art["title"];
 }
 
 else if (isset($_GET["cat"])) {
 	$cat = get_category($_GET["cat"]);
 	$include = "inc/arts_cat.inc.php";
-	$title = $cat["category"];
+	$title = $cat['category'];
 	$header = $cat["category"];
-
-} else {
-	$include = "inc/arts.inc.php";
-	$title = "Тест-сайт";
-	$header = "Новое на сайте";
 }

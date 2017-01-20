@@ -19,7 +19,14 @@ if (!mysqli_select_db($link, DB_NAME)) {//если базы не сущест.
 
 //for menu
 $links = [
-	["link_page"=>"index.php", "name"=>"Главная страница"],
-	["link_page"=>"index.php?page=feedback", "name"=>"Обратная связь"],
-	["link_page"=>"index.php?page=map", "name"=>"Карта сайта"]
+	["link"=>"index.php", "name"=>"Главная страница"],
+	["link"=>"index.php?page=feedback", "name"=>"Обратная связь"],
+	["link"=>"index.php?page=map", "name"=>"Карта сайта"]
 ];
+$link_cats = [
+	["link"=>"index.php?cat=1", "name"=>"HTML"],
+	["link"=>"index.php?cat=2", "name"=>"CSS"],
+	["link"=>"index.php?cat=3", "name"=>"JS"],
+	["link"=>"index.php?cat=4", "name"=>"PHP"]
+];
+$msg = "";

@@ -38,6 +38,21 @@ header {
 	margin-right: 20px;
 }
 
+menu a {
+	display: inline-block;
+	width: 100px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	text-decoration: none;
+	color: #595;
+	font-size: 24px;
+}
+
+menu a:hover{
+	background-color: #aaa;
+}
+
 aside {
 	float: left;
 	margin-right: 50px;
@@ -52,7 +67,7 @@ aside {
 	display: inline-block;
 }
 
-.vert a {
+aside .vert a {
 	display: inline-block;
 	width: 150px;
 	font-size: 20px;
@@ -63,19 +78,19 @@ aside {
 	text-decoration: none;
 }
 
-.vert a:hover {
+aside .vert a:hover {
 	color: #bbb;
 	background-color: #777;
 }
 
-.hor a {
+footer .hor a {
 	width: 100px;
 	margin: 20px;
 	font-size: 20px;
 	color: #394d82;
 }
 
-.hor a:hover {
+footer .hor a:hover {
 	text-decoration: none;
 	color: #743030;
 }
