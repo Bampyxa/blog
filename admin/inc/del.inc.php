@@ -1,6 +1,6 @@
 <?php
 //Вывести весь список статей со ссылкой удаления
-$arr = get_arts();
+$arr = $blog->getArts();
 if (!$arr) {
   $msg = "Ошибка получения данных из бд";
 } else {
@@ -14,7 +14,7 @@ if (!$arr) {
 
 //Удал-е статьи и пересохранение:
 if (isset($_GET["del"])) {
-  if (!delete_art($_GET["del"])) {
+  if (!$blog->delArt($_GET["del"])) {
   	$msg= "Ошибка удаления из бд";
   } else {
 	  header("Location: ".$_SERVER['PHP_SELF']."?adm=3");//убрать del=id

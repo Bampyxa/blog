@@ -1,5 +1,5 @@
 <?php
-
+//default:
 $categ = "";
 $author = "";
 $title = "";
@@ -7,8 +7,8 @@ $text = "";
 
 //Редактируем полученную статью
 if (isset($_GET["upd"])) {
-  $id = clear_int($_GET["upd"]);
-  $arr = get_art($id);
+  $id = $blog->clearInt($_GET["upd"]);
+  $arr = $blog->getArt($id);
   $categ = $arr['category'];
   $author = $arr['author'];
   $title = $arr['title'];
@@ -19,9 +19,10 @@ if (isset($_GET["upd"])) {
 <fieldset>
 <legend>Редактировать статью</legend>
   <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
+    <!-- <input type="hidden" name="id" value="<?=$id?>"> мона так-->
     <select name="category">
     <?php
-      $arr = get_categories();
+      $arr = $blog->getCategories();
       foreach ($arr as $item) {
         if ($categ == $item["category"]) {
           echo "<option value=\"{$item['id']}\" selected>{$item['category']}</option>";
@@ -31,9 +32,9 @@ if (isset($_GET["upd"])) {
       }
     ?>
     </select><br>
-      <input type="text" name="author" value="<?=$author?>"><br>
-      <input type="text" name="title" value="<?=$title?>"><br>
-      <textarea name="text_art"><?=$text?></textarea><br>
+      <input type="text" name="author" value="<?=$author?>" placeholder="author"><br>
+      <input type="text" name="title" value="<?=$title?>" placeholder="title"><br>
+      <textarea name="text_art" placeholder="text"><?=$text?></textarea><br>
     <input type="submit" value="Редактировать">
   </form>
 </fieldset>
@@ -41,22 +42,22 @@ if (isset($_GET["upd"])) {
 <?php
 //Пересохранение статьи
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $title = clear_str($_POST["title"]);
-  $author = clear_str($_POST["author"]);
-  $categ = clear_str($_POST["category"]);
-  $text = clear_str($_POST["text_art"]);
-  // $id = $_GET["upd"];// уже известно
+  $title = $blog->clearStr($_POST["title"]);
+  $author = $blog->clearStr($_POST["author"]);
+  $categ = $blog->clearInt($_POST["category"]);
+  $text = $blog->clearStr($_POST["text_art"]);
+  // $id = $_POST["id"];//уже известно
   if (empty($title) and empty($author) and empty($text)) {//проверка на пуст. поля
     $msg = "Заполните поля";
   } else {
-	  update_art($id, $title, $author, $categ, $text);
+	  $blog->updArt($id, $title, $author, $categ, $text);
     header("Location: ".$_SERVER['PHP_SELF']."?adm=2");
     exit;
   }
 }
 
 //Вывод всех статей со ссылкой редактирования
-$arr = get_arts();
+$arr = $blog->getArts();
 if (!$arr) {
   $msg = "Ошибка получения из бд";
 } else {

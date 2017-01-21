@@ -1,3 +1,2 @@
 <?php
-
-show_art($art);
+$blog->showArt($art);

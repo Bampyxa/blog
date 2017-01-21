@@ -2,3 +2,5 @@ files/*
 .htaccess
 prepros-6.config
 test.php
+site2.sublime-project
+site2.sublime-workspace

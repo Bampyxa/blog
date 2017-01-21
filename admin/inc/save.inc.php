@@ -2,14 +2,14 @@
 
 //Сохранение добавленной статьи
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $categ = clear_str($_POST["category"]);
-  $author = clear_str($_POST["author"]);
-  $title = clear_str($_POST["title"]);
-  $text = clear_str($_POST["text_art"]);
+  $categ = $blog->clearStr($_POST["category"]);
+  $author = $blog->clearStr($_POST["author"]);
+  $title = $blog->clearStr($_POST["title"]);
+  $text = $blog->clearStr($_POST["text_art"]);
   if (empty($author) and empty($title) and empty($text)) {//проверка на пуст. поля
     $msg = "Заполните поля";
   } else {
-    if (!save_art($title, $author, $categ, $text)) {
+    if (!$blog->saveArt($title, $author, $categ, $text)) {
     	$msg = "Данные не записались в бд";
     } else {
       header("Location: ".$_SERVER["REQUEST_URI"]);//кроме adm пер-х GET нету
@@ -24,26 +24,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
   <select name="category">
     <?php
-      $arr = get_categories();
+      $arr = $blog->getCategories();
       foreach ($arr as $item) {
-        /*if ($categ == $item["category"]) {
-          echo "<option value=\"{$item['id']}\" selected>{$item['category']}</option>";
-        } else {*/
-          echo "<option value=\"{$item['id']}\">{$item['category']}</option>";
-        // }
+        echo "<option value=\"{$item['id']}\">{$item['category']}</option>";
       }
     ?>
   </select><br>
-    <input type="text" name="author"><br>
-    <input type="text" name="title"><br>
-    <textarea name="text_art"></textarea><br>
+    <input type="text" name="author" placeholder="author"><br>
+    <input type="text" name="title" placeholder="title"><br>
+    <textarea name="text_art" placeholder="text"></textarea><br>
     <input type="submit" value="Создать">
   </form>
 </fieldset>
 
 <?php
 //Вывод всех статей
-$arr = get_arts();
+$arr = $blog->getArts();
 if (!$arr) {
   $msg = "Ошибка получения данных из бд";
 } else {

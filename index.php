@@ -1,8 +1,9 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+require_once "libs/ClassBlog.inc.php";//function for work with db
+$blog = new Blog();//получ-е объ. здесь т.к. route.inc исп-ет бд
 require_once "libs/data.inc.php";//connect db
-require_once "libs/lib.inc.php";//function for work with db
 require_once "libs/route_site.inc.php";//work with db
 ?>
 <!DOCTYPE html>
@@ -20,13 +21,13 @@ require_once "libs/route_site.inc.php";//work with db
 		</header>
 		<menu>
 			<?php
-				menu($link_cats, "hor");
+				$blog->menu($link_cats, "hor");
 				?>
 		</menu>
 		<main class="clearfix">
 			<aside>
 				<?php
-				menu($links);
+				$blog->menu($links);
 				?>
 			</aside>
 			<div class="content">
@@ -42,7 +43,7 @@ require_once "libs/route_site.inc.php";//work with db
 		<footer>
 			<p>Copyright my site.</p>
 			<?php
-			menu($links, "hor");
+			$blog->menu($links, "hor");
 			?>
 		</footer>
 	</div>

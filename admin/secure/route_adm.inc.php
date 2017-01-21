@@ -24,6 +24,6 @@ if (isset($_GET["adm"])) {
 	}
 }
 
-if (isset($_GET["logout"])) {
-	logout();
-}
+/*if (isset($_GET["logout"])) {//переместил в session.inc.php
+	$blog->logOut();
+}*/

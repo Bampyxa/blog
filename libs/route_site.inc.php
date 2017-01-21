@@ -20,7 +20,7 @@ if (isset($_GET["page"])) {
 }
 
 else if (isset($_GET["id"])) {
-	$art = get_art($_GET["id"]);
+	$art = $blog->getArt($_GET["id"]);//массив одной статьи
 	if (!$art) $msg = "Не получены данные из бд";
 	$include = "inc/art.inc.php";
 	$title = "{$art['category']} | {$art['title']}";
@@ -28,7 +28,7 @@ else if (isset($_GET["id"])) {
 }
 
 else if (isset($_GET["cat"])) {
-	$cat = get_category($_GET["cat"]);
+	$cat = $blog->getCategory($_GET["cat"]);//массив одной категории
 	$include = "inc/arts_cat.inc.php";
 	$title = $cat['category'];
 	$header = $cat["category"];

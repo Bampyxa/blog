@@ -1,5 +1,5 @@
 <?php
 
-$arr = get_arts();
+$arr = $blog->getArts();
 if (!$arr) $msg = "Не получены данные из бд";
-show_all_arts($arr);
+$blog->showArts($arr);

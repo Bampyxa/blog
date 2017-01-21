@@ -1,5 +1,5 @@
 <?php
 
-$arr = get_arts_cat($_GET["cat"]);
+$arr = $blog->getArtsCat($_GET["cat"]);
 if (!$arr) $msg = "Не получены данные из бд";
-show_all_arts($arr);
+$blog->showArts($arr);
