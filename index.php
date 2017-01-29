@@ -29,6 +29,12 @@ require_once "libs/route_site.inc.php";//work with db
 				<?php
 				$blog->menu($links);
 				?>
+				<h3>Курсы валют</h3>
+				<ul>
+					<?php
+						require_once "inc/service-valute.inc.php";
+					?>
+				</ul>
 			</aside>
 			<div class="content">
 				<h2><?=$header?></h2>

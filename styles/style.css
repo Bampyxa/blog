@@ -16,6 +16,11 @@ body {
 	background-color: lightgrey;
 }
 
+ul {
+	list-style: none;
+	padding-left: 0;
+}
+
 .wrap {
 	width: 1024px;
 	margin: 30px auto;
@@ -56,10 +61,10 @@ menu a:hover{
 aside {
 	float: left;
 	margin-right: 50px;
+	width: 250px;
 }
 
 .menu {
-	list-style: none;
 	padding-left: 0;
 }
 
@@ -98,12 +103,13 @@ footer .hor a:hover {
 
 .content {
 	float: right;
-	width: 730px;
+	width: 700px;
 }
 
 h2 {
 	font-size: 24px;
 	color: #666;
+	text-align: center;
 }
 
 section {
