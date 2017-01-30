@@ -18,9 +18,10 @@ require_once 'secure/route_adm.inc.php';
 <body>
 	<h4><?=$header?></h4>
 	<ul>
-		<li><a href="index.php?adm=1">Save</a></li>
-		<li><a href="index.php?adm=2">Edit</a></li>
-		<li><a href="index.php?adm=3">Delete</a></li>
+		<li><a href="index.php?adm=1">Save articles</a></li>
+		<li><a href="index.php?adm=2">Edit articles</a></li>
+		<li><a href="index.php?adm=3">Delete articles</a></li>
+		<li><a href="index.php?adm=4">Delete comments</a></li>
 		<li><a href="index.php?logout">Logout</a></li>
 	</ul>
 	<p class="msg-adm"><?=$msg?></p>
@@ -28,7 +29,6 @@ require_once 'secure/route_adm.inc.php';
 			if (isset($_GET["adm"]))
 				require_once $include;
    // ob_flush();
-			echo "Создано объектов: ".Blog::$count;
 		?>
 </body>
 </html>

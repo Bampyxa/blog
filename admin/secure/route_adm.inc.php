@@ -21,6 +21,11 @@ if (isset($_GET["adm"])) {
 	    $title_site .= " | Удаление статей";
 	    $header = "Удалить статью";
 	    break;
+    case "4" :
+	    $include = "inc/del-comm.inc.php";
+	    $title_site .= " | Удаление комментариев";
+	    $header = "Удалить комментарий";
+	    break;
 	}
 }
 

@@ -4,7 +4,8 @@ class Blog{
   private $_db;
   public $categs = ["HTML", "CSS", "JS", "PHP"];
   const DB_FILE = "/home/anton/www+/site2/files/arts.db";
-  const XML_FILE = "/home/anton/www+/site2/files/arts.xml";
+  const XML_FILE = "/home/anton/www+/site2/files/map.xml";
+  const COMM_FILE = "/home/anton/www+/site2/files/comments.txt";
   static public $count = 0;
   function __construct() {
     $this->_db = new SQLITE3(self::DB_FILE);
@@ -40,6 +41,7 @@ class Blog{
   function __destruct() {
     unset($this->_db);
   }
+/***********Articles**************/
   function saveArt($title, $author, $category, $text_art) {
     $datetime = time();
     $sql = "INSERT INTO articles (title, author, category, text_art, datetime) VALUES (:t, :a, :c, :ta, :d)";
@@ -80,6 +82,13 @@ class Blog{
     $row = $res->fetchArray(SQLITE3_ASSOC);
     return $row;
   }
+  function getArtName($id) {
+    $sql = "SELECT title FROM articles WHERE id=$id";
+    if (!$res = $this->_db->query($sql))
+      return false;
+    $row = $res->fetchArray(SQLITE3_ASSOC);
+    return $row["title"];//вернем строку
+  }
   function getCategories() {
     $sql = "SELECT id, category FROM categories";
     if (!$res = $this->_db->query($sql))
@@ -107,6 +116,63 @@ class Blog{
     $this->createXml(self::XML_FILE);
     return true;
   }
+/***********Comments**************/
+  //сохр. строку или одномер.масс.:
+  function saveComm($str, $end_file=FILE_APPEND) {
+    if (!file_put_contents(self::COMM_FILE, $str, $end_file))
+      return false;
+    return true;
+  }
+  //получ. масс. всех строк:
+  function getAllComms() {
+    if (!file_exists(self::COMM_FILE))
+      return false;
+    $res = file(self::COMM_FILE);
+    return $res;//[]
+  }
+  //разбив. строку на пер-е(исп-ся в ф-и вывода на экран):
+  function explodeStr($arr) {
+    $resArr = [];
+    foreach($arr as $item) {
+      list($idArt, $dt, $nick, $coded) = explode("|", $item);
+      $comment = base64_decode($coded);
+      $resArr[] = [$idArt, $dt, $nick, $comment];
+    }
+    return $resArr;//[[]]
+  }
+  //удал. опред-й строки из масс. строк:
+  function delComm($arr, $id) {
+    unset($arr[$id]);
+    return $arr;
+  }
+  function showCommsArt($arr, $idArt) {
+    $arrArr = $this->explodeStr($arr);//получ. масс. массивов с нуж. пер-ми
+    for($i=0 , $cnt=count($arrArr); $i<$cnt; $i++) {
+      $item = $arrArr[$i];
+      if ($item[0] == $idArt) {
+        $dt = date("d-m-Y H:i:s", $item[1]);
+        echo <<<HEREDOC
+        <li><p><b> $item[2] </b><i> $dt </i></p>
+        <p> $item[3] </p>
+        <p><a href='{$_SERVER['PHP_SELF']}?id=$idArt&upd_com={$i}'>Редактировать</a></p> </li>
+HEREDOC;
+        }
+      }
+    }
+    function showAllComms($arr) {
+      $arrArr = $this->explodeStr($arr);//получ. масс. массивов с нуж. пер-ми
+      for($i=0 , $cnt=count($arrArr); $i<$cnt; $i++) {
+        $item = $arrArr[$i];
+        $dt = date("d-m-Y H:i:s", $item[1]);
+        $title = $this->getArtName($item[0]);//название статьи c опред. id
+        echo <<<HEREDOC
+        <li><p> $title <b> $item[2] </b><i> $dt </i></p>
+        <p> $item[3] </p>
+        <p><a href='{$_SERVER['PHP_SELF']}?adm=4&del_com={$i}'>Удалить</a></p> </li>
+HEREDOC;
+      }
+    }
+/*************XML******************/
   function createXml() {
     $dom = new DomDocument("1.0", "utf-8");
     $dom->formatOutput = true;
@@ -142,6 +208,8 @@ class Blog{
     $dom->save(self::XML_FILE);
   }
   function readXml() {
+    if (!file_exists(self::XML_FILE))
+      return false;
     $sxml = simplexml_load_file(self::XML_FILE);
     echo "<ul>";
     foreach ($sxml->article as $item) {
@@ -151,6 +219,7 @@ HEREDOC;
     }
     echo "</ul>";
   }
+/***********Other**************/
   function clearStr($data) {
     return $this->_db->escapeString(trim(strip_tags($data, "<p><a><b><i><img><table><tr><th><td><div>")));
   }

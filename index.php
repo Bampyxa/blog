@@ -41,6 +41,8 @@ require_once "libs/route_site.inc.php";//work with db
 				<section>
 					<?php
 					require_once $include;
+					if (isset($_GET["id"]))//на стр. статьи
+						require_once "inc/comm.inc.php";//подкл.коммент.
 					?>
 				</section>
 				<p class="msg"><?=$msg?></p>
