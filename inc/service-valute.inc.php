@@ -1,15 +1,20 @@
 <?php
 $today = date("d-m-Y");
+$last_change = date("d-m-Y", filemtime("files/valutes.xml"));
 //если файла не существ.(перв. раз) или дата послед. изм-я - вчера и ранее:
-if (!file_exists("files/valutes.xml") || date("d-m-Y", filemtime("files/valutes.xml")) != $today) {
+if (!file_exists("files/valutes.xml") || $last_change != $today) {
 	try {
 		$client = new SoapClient("http://www.cbr.ru/DailyInfoWebServ/DailyInfo.asmx?wsdl");
 		$param["On_date"] = time();
 		$response = $client->GetCursOnDateXml($param);
 		$result = $response->GetCursOnDateXMLResult->any;
-		getSelectedValute($result, ["USD", 'EUR']);
+		getSelectedValute($result, ["USD", 'EUR']);//если есть соед-е с сервисом
 	} catch (SoapFault $e) {
-		echo "Не получены данные курса валют. ".$e->getMessage();
+		// echo "Не получены данные курса валют. ".$e->getMessage();
+		if (!file_exists("files/valutes.xml"))
+			echo "Извините, данных для показа нет";//если нет соед-я с сервисом и файла
+		else
+			getValuteFromFile("files/valutes.xml");//если соед-я с сервисом нет
 	}
 } else {
 	getValuteFromFile("files/valutes.xml");
